@@ -1,0 +1,41 @@
+* {
+    -fx-primary-color: #FF5900;
+    -fx-second-color: #4D4D4D;
+}
+
+.background{
+    -fx-background-color: #fff;
+}
+
+.background-title{
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: #fff;
+}
+
+.left-panel{
+    -fx-background-color: -fx-primary-color;
+}
+
+.label-title{
+    -fx-text-fill: #4D4D4D;
+    -fx-font-weight: bold;
+}
+
+.btn-login{
+    -fx-background-color: -fx-second-color;
+    -fx-text-fill: #fff;
+    -fx-cursor: hand;
+    -fx-border-radius: 0;
+    -fx-border-insets: 0;
+}
+
+.progress-bar.jfx-progress-bar > .track{
+    -fx-background-color: -fx-second-color;
+    -fx-text-fill: #fff;
+}
+
+.progress-bar.jfx-progress-bar > .bar,
+.jfx-progress-bar:indeterminate > .bar{
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 1.5;
+}

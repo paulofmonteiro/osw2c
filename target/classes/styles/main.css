@@ -1,0 +1,17 @@
+* {
+    -fx-primary-color: #FF5900;
+}
+
+.background{
+    -fx-background-color: #fff;
+}
+
+.background-title{
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: #fff;
+}
+
+.left-panel{
+    -fx-background-color: -fx-primary-color;
+}
+
