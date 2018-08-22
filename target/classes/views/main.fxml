@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="800.0" styleClass="background" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="400.0" styleClass="background" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.core.Controller">
    <children>
-      <HBox prefHeight="640.0" prefWidth="800.0">
+      <AnchorPane prefHeight="500.0" prefWidth="400.0">
          <children>
-            <AnchorPane prefHeight="640.0" prefWidth="500.0" styleClass="left-panel" stylesheets="@../styles/main.css">
-               <children>
-                  <Label alignment="CENTER" layoutY="67.0" prefHeight="60.0" prefWidth="500.0" text="ONE TICKET" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutY="97.0" prefHeight="60.0" prefWidth="500.0" text="TRANSFER" textAlignment="CENTER">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children></AnchorPane>
-            <AnchorPane prefHeight="640.0" prefWidth="300.0">
-               <children>
-                  <Label alignment="CENTER" layoutY="67.0" prefHeight="60.0" prefWidth="300.0" styleClass="background-title" stylesheets="@../styles/main.css" text="GTAX LOGIN INFO">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
+            <Label alignment="CENTER" layoutX="80.0" layoutY="107.0" prefHeight="40.0" prefWidth="240.0" text="GTAX LOGIN INFO">
+               <styleClass>
+                  <String fx:value="subtitle" />
+                  <String fx:value="title-wrap" />
+               </styleClass>
+            </Label>
+            <JFXTextField fx:id="txtGTAXUsername" focusColor="WHITE" labelFloat="true" layoutX="78.0" layoutY="204.0" prefHeight="25.0" prefWidth="240.0" promptText="USERNAME">
+               <font>
+                  <Font name="Roboto Light" size="16.0" />
+               </font>
+            </JFXTextField>
+            <JFXButton fx:id="btnGTAXLogin" layoutX="78.0" layoutY="414.0" onAction="#verifyGTAXLoginInfo" prefHeight="60.0" prefWidth="240.0" styleClass="btn-login" text="NEXT" />
+            <JFXPasswordField fx:id="txtGTAXPassword" focusColor="WHITE" labelFloat="true" layoutX="80.0" layoutY="315.0" prefHeight="25.0" prefWidth="240.0" promptText="PASSWORD">
+               <font>
+                  <Font name="Roboto Light" size="16.0" />
+               </font>
+            </JFXPasswordField>
          </children>
-      </HBox>
+      </AnchorPane>
+      <AnchorPane layoutY="500.0" prefHeight="120.0" prefWidth="400.0" styleClass="footer" stylesheets="@../styles/splashscreen.css">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="300.0" layoutX="50.0" layoutY="10.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../images/tr_tac_h_lg_rgb_rv.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
