@@ -44,7 +44,7 @@
 }
 
 .progress-bar.jfx-progress-bar > .track{
-    -fx-background-color: -fx-second-color;
+    -fx-background-color: #fff;
     -fx-text-fill: #fff;
 }
 

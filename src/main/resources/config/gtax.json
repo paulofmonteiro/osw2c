@@ -2,7 +2,7 @@
   "service": "GTAX",
   "url": "login.salesforce.com",
   "urlTest": "https://test.salesforce.com/",
-  "userName": "",
+  "username": "",
   "password": "",
   "usernameTest": "paulo.f.monteiro@gtax.com.uat",
   "passwordTest": "p@ulo123"

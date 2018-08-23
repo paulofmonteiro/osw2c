@@ -26,6 +26,7 @@
     "password": "Juli@091217"
   },
 
+  "configFolder": "C:\\wcc2gtax\\config\\",
   "ticketsFolder": "C:\\wcc2gtax\\tickets\\"
 
 }

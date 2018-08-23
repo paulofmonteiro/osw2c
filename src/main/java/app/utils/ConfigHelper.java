@@ -1,7 +1,10 @@
 package app.utils;
 
 import javax.json.*;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +23,7 @@ public class ConfigHelper {
 
         if(!configFiles.containsKey(fileName)){
             try{
-                is = ConfigHelper.class.getResourceAsStream("/config/" + fileName + ".json");
+                is = new FileInputStream("C:\\wcc2gtax\\config\\" + fileName + ".json");
                 jReader = Json.createReader(is);
 
                 configFiles.put(fileName, jReader.readObject());
@@ -70,8 +73,33 @@ public class ConfigHelper {
             configFile = Json.createObjectBuilder(jObj)
                 .add(key, value)
                 .build();
+
+            configFiles.put(file, configFile);
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static Boolean store(String file){
+        FileWriter fileWriter;
+        JsonObject configFile;
+
+        if(configFiles.containsKey(file)){
+            configFile = configFiles.get(file);
+
+            try {
+                fileWriter = new FileWriter(configFiles.get("general").getString("configFolder") + file + ".json");
+                fileWriter.write(configFile.toString());
+                fileWriter.close();
+
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        return true;
+        return false;
     }
 }

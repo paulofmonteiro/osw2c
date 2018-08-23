@@ -18,15 +18,15 @@ public class WebDriverHelper {
         options.addArguments("test-type");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("no-sandbox");
-        options.addArguments("--headless");//hide browser
-        //windows
-        //options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-
-        options.setBinary("/usr/bin/google-chrome");
+        options.addArguments("--headless");//hide
 
         //load from config file
-        //System.setProperty("webdriver.chrome.driver", "C:\\wcc2gtax\\assets\\chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+        //windows
+        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\wcc2gtax\\assets\\chromedriver.exe");
+        //linux
+        //options.setBinary("/usr/bin/google-chrome");
+        //System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
 
         return options;
     }

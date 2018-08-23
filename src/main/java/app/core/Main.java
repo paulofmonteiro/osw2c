@@ -1,5 +1,6 @@
 package app.core;
 
+import app.utils.ConfigHelper;
 import app.webdriver.WebDriverHelper;
 import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
@@ -18,6 +19,13 @@ public class Main extends Application {
         // Perform some heavy lifting (i.e. database start, check for application updates, etc. )
         for (int i = 0; i < 500000; i++) {
 
+            System.out.println((100 * i) / 500000);
+        }
+
+        if(ConfigHelper.loadConfigFile("general") && ConfigHelper.loadConfigFile("gtax")){
+            ConfigHelper.loadConfigFile("wcc");
+            System.out.println("general config loaded");
+            System.out.println("gtax config loaded");
         }
     }
 

@@ -1,9 +1,1 @@
-{
-  "service": "GTAX",
-  "url": "login.salesforce.com",
-  "urlTest": "https://test.salesforce.com/",
-  "userName": "",
-  "password": "",
-  "usernameTest": "paulo.f.monteiro@gtax.com.uat",
-  "passwordTest": "p@ulo123"
-}
+{"service":"GTAX","url":"login.salesforce.com","urlTest":"https://test.salesforce.com/","username":"","password":"","usernameTest":"paulo.f.monteiro@gtax.com.uat","passwordTest":"p@ulo123"}
