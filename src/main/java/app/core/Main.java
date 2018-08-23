@@ -17,7 +17,7 @@ public class Main extends Application {
     public void init(){
         // Perform some heavy lifting (i.e. database start, check for application updates, etc. )
         for (int i = 0; i < 500000; i++) {
-            System.out.println((100 * i) / 500000);
+
         }
     }
 

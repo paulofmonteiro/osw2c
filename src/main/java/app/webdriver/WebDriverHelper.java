@@ -11,23 +11,25 @@ public class WebDriverHelper {
     private static HashMap<String, WebDriver> instances;
 
     private static ChromeOptions setDriverOptions(){
-        ChromeOptions options = new ChromeOptions();
+        ChromeOptions options;
 
         options = new ChromeOptions();
         options.addArguments("--disable-extensions");
         options.addArguments("test-type");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("no-sandbox");
-        //options.addArguments("--headless");//hide browser
-        options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        options.addArguments("--headless");//hide browser
+        //windows
+        //options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+
+        options.setBinary("/usr/bin/google-chrome");
 
         //load from config file
-        System.setProperty("webdriver.chrome.driver", "C:\\wcc2gtax\\assets\\chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "C:\\wcc2gtax\\assets\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
 
         return options;
     }
-
-
 
     private static WebDriver setNewWebDriver(String key){
         WebDriver driver;

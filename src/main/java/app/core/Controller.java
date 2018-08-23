@@ -1,5 +1,6 @@
 package app.core;
 
+import app.utils.ConfigHelper;
 import app.webdriver.WebDriverHelper;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -23,11 +24,16 @@ public class Controller implements Initializable {
     private JFXButton btnGTAXLogin;
 
     public void initialize(URL location, ResourceBundle resources) {
-       this.txtGTAXUsername.setText("Paulo");
+        if(ConfigHelper.loadConfigFile("general") && ConfigHelper.loadConfigFile("gtax")){
+            System.out.println(ConfigHelper.getConfigAsJson("general", "webDriver").getString("name"));
+            System.out.println(ConfigHelper.getConfig("gtax", "url"));
+        }
     }
 
     @FXML
     void verifyGTAXLoginInfo(ActionEvent event) {
         WebDriverHelper.getWebDriver("default");
+
+        ConfigHelper.setConfig("gtax", "username", "legal");
     }
 }

@@ -1,0 +1,31 @@
+{
+  "name": "OneSource Ticket Transfer",
+
+  "webDriver": {
+    "name": "Chrome",
+    "property": "webdriver.chrome.driver",
+    "pathWindows": "C:\\wcc2gtax\\assets\\chromedriver.exe",
+    "pathLinux": "/usr/bin/chromedriver",
+    "chromePathWindows": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    "chromePathLinux": "/usr/bin/google-chrome"
+  },
+
+  "loginWCC": {
+    "service": "WCC",
+    "url": "https://secure.softcomex.com.br/pls/callcenter/menu",
+    "ticketUrl": "https://secure.softcomex.com.br/pls/callcenter/tela_ctrl_suporte?cod_ativ=",
+    "filesUrl": "https://secure.softcomex.com.br/pls/callcenter/tela_ctrl_arquivo?cod_ativ=",
+    "username": "paulomonteiro",
+    "password": "Coca@123"
+  },
+
+  "loginSafe":{
+    "service": "safe",
+    "url": "https://safe.thomson.com/",
+    "username": "6031188",
+    "password": "Juli@091217"
+  },
+
+  "ticketsFolder": "C:\\wcc2gtax\\tickets\\"
+
+}

@@ -1,0 +1,8 @@
+{
+  "service": "WCC",
+  "url": "https://secure.softcomex.com.br/pls/callcenter/menu",
+  "ticketUrl": "https://secure.softcomex.com.br/pls/callcenter/tela_ctrl_suporte?cod_ativ=",
+  "filesUrl": "https://secure.softcomex.com.br/pls/callcenter/tela_ctrl_arquivo?cod_ativ=",
+  "username": "paulomonteiro",
+  "password": "Coca@123"
+}
