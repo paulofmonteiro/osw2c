@@ -2,6 +2,7 @@ package app.core;
 
 import app.gtax.GTAXLogin;
 import app.gtax.GTAXLoginService;
+import app.gtax.GTAXNewTicket;
 import app.utils.ConfigHelper;
 import app.wcc.WCCLogin;
 import app.wcc.WCCLoginService;
@@ -56,7 +57,7 @@ public class Controller implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         WebDriverHelper.getWebDriver("default");
-        translateAnimation(0.5, ticketPanel, 600);
+        //translateAnimation(0.5, ticketPanel, 600);
     }
 
     @FXML
@@ -101,40 +102,46 @@ public class Controller implements Initializable {
     @FXML
     void getTickets(ActionEvent event) {
         if(!tickerNumbers.getText().isEmpty()){
-            String  tickets[] = tickerNumbers.getText().split("[^\n]*\n+");
+            String tickets[] = tickerNumbers.getText().split("[^\n]*\n+");
+            Boolean ticketsOk[];
 
-            WCCLoginService wccLoginService = new WCCLoginService(WebDriverHelper.getWebDriver("default"), ConfigHelper.getConfig("wcc", "url"));
-            wccLoginService.setOnSucceeded(e -> {
-                Object value = wccLoginService.getValue();
+            GTAXLogin gtaxLogin = new GTAXLogin(WebDriverHelper.getWebDriver("default"), true);
 
-                if((Boolean) value){
-                    System.out.println("logado com sucesso WCC");
-                    mainProgressBar.visibleProperty().setValue(false);
+            if(gtaxLogin.login()){
 
-                    HashMap<String, WCCTicketService> ticketServices = new HashMap<>();
+                        new GTAXNewTicket(WebDriverHelper.getWebDriver("default"), tickets[0]);
 
+                        //gtaxLogin.closeAllTicketFrames();
 
-                    for(int i = 0; i < tickets.length; i++){
-                        String ticketNumber = tickets[i];
-
-                        WCCTicketService wccTicketService = new WCCTicketService(WebDriverHelper.getWebDriver("default"), tickets[i], ConfigHelper.getConfig("wcc", "ticketUrl"));
-                        wccTicketService.setOnSucceeded(ev ->{
-                            Object value1 = wccTicketService.getValue();
-
-                            if((Boolean) value1){
-                                System.out.println(ticketNumber);
-                            }else{
-                                System.out.println("erro ao gravar ticket");
-                            }
-                        });
-                    }
-                }else{
-                    System.out.println("erro ao logar WCC");
-                }
-            });
-
-            wccLoginService.start();
+            }
+/*
             mainProgressBar.visibleProperty().setValue(true);
+
+            if(new WCCLogin(WebDriverHelper.getWebDriver("default")).login(ConfigHelper.getConfig("wcc", "url"))){
+                ticketsOk = new Boolean[tickets.length];
+
+                for(int i = 0; i < tickets.length; i++) {
+                    ticketsOk[i] = new WCCTicketInfo(WebDriverHelper.getWebDriver("default"), tickets[i], ConfigHelper.getConfig("wcc", "ticketUrl")).getAllTicketPageInfo();
+                }
+
+                GTAXLogin gtaxLogin = new GTAXLogin(WebDriverHelper.getWebDriver("default"), toggleTestEnvironment.selectedProperty().getValue());
+
+                if(gtaxLogin.login()){
+                    for(int i = 0; i < ticketsOk.length; i++) {
+                        if( ticketsOk[i]){
+                            new GTAXNewTicket(WebDriverHelper.getWebDriver("default"), tickets[i]);
+
+                            //gtaxLogin.closeAllTicketFrames();
+                        }
+                    }
+                }
+
+
+            }
+
+*/
+            mainProgressBar.visibleProperty().setValue(false);
+
         }
     }
 }

@@ -21,10 +21,12 @@ public class WCCTicket {
     private String userEmail;
     private String ticketDetails;
     private String ticketStatus;
-    private String ticketType;
+    private String inquiry;
+    private String callType;
     private String responsableGroup;
     private String ticketLvl;
     private String supportAnalyst;
+    private String stage;
 
     public WCCTicket(){}
 
@@ -38,7 +40,7 @@ public class WCCTicket {
         this.userEmail = userEmail;
         this.ticketDetails = ticketDetails;
         this.ticketStatus = ticketStatus;
-        this.ticketType = ticketType;
+        this.inquiry = ticketType;
         this.responsableGroup = responsableGroup;
         this.ticketLvl = ticketLvl;
         this.supportAnalyst = supportAnalyst;
@@ -56,7 +58,7 @@ public class WCCTicket {
 
             folder = new File(ticketFolder);
 
-            if(! folder.exists()){
+            if(!folder.exists()){
                 folder.mkdir();
             }
 
@@ -89,10 +91,12 @@ public class WCCTicket {
                 .add("userEmail", this.userEmail)
                 .add("ticketDetails", this.ticketDetails)
                 .add("ticketStatus", this.ticketStatus)
-                .add("ticketType", this.ticketType)
+                .add("inquiry", this.inquiry)
+                .add("callType", this.callType)
                 .add("responsableGroup", this.responsableGroup)
                 .add("ticketLvl", this.ticketLvl)
                 .add("supportAnalyst", this.supportAnalyst)
+                .add("stage", this.stage)
                 .build();
 
         return ticket;
@@ -171,12 +175,12 @@ public class WCCTicket {
         this.ticketStatus = ticketStatus;
     }
 
-    public String getTicketType() {
-        return ticketType;
+    public String getInquiry() {
+        return inquiry;
     }
 
-    public void setTicketType(String ticketType) {
-        this.ticketType = ticketType;
+    public void setInquiry(String ticketType) {
+        this.inquiry = ticketType;
     }
 
     public String getResponsableGroup() {
@@ -201,6 +205,22 @@ public class WCCTicket {
 
     public void setSupportAnalyst(String supportAnalyst) {
         this.supportAnalyst = supportAnalyst;
+    }
+
+    public String getCallType() {
+        return callType;
+    }
+
+    public void setCallType(String callType) {
+        this.callType = callType;
+    }
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
     }
 
 }

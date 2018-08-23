@@ -18,7 +18,7 @@ public class WebDriverHelper {
         options.addArguments("test-type");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("no-sandbox");
-        options.addArguments("--headless");//hide
+        //options.addArguments("--headless");//hide
 
         //load from config file
         //windows
