@@ -16,22 +16,24 @@ import java.util.List;
 public class GTAXNewTicket {
 
     private WebDriver WD;
+    private WebElement formElement;
+    private String frameID;
 
-    public GTAXNewTicket(WebDriver webdriver, String ticketNumber){
+    public GTAXNewTicket(WebDriver webdriver, String ticketNumber, Boolean testEnviroment){
         this.WD = webdriver;
         TicketHelper.loadConfigFile(ticketNumber);
 
         if(this.openNewTicketTab()){
             System.out.println("ok");
-            WebElement formElement = this.WD.findElement(By.id("editPage"));
+            formElement = this.WD.findElement(By.id("editPage"));
 
-            setUserName();
+            setUserName(ticketNumber, testEnviroment);
             setBrand(formElement);
             setProductTitle(formElement);
             setModule(formElement, ticketNumber);
             setInquiry(formElement, ticketNumber);
             setCallType(formElement, ticketNumber);
-            setCountry(formElement);
+            setCountry(formElement, ticketNumber);
             setCaseOrigin(formElement);
             setDescription(formElement, ticketNumber);
             setPriority(formElement, ticketNumber);
@@ -105,8 +107,8 @@ public class GTAXNewTicket {
             for(int i = 0; i < newCaseFrames.size(); i++){
                 System.out.println(newCaseFrames.get(i).getAttribute("id"));
                 System.out.println(newCaseFrames.get(i).getAttribute("name"));
-
-                this.WD.switchTo().frame(newCaseFrames.get(i).getAttribute("id"));
+                this.frameID = newCaseFrames.get(i).getAttribute("id");
+                this.WD.switchTo().frame(this.frameID);
 
                 try{
                     WebElement formElement = this.WD.findElement(By.id("editPage"));
@@ -120,10 +122,18 @@ public class GTAXNewTicket {
         return false;
     }
 
-    private void setUserName(){
+    private void setUserName(String ticketNumber, Boolean testEnviroment){
         WebElement textField;
         textField = this.WD.findElement(By.id("cas3"));
-        textField.sendKeys("Luiz Andriolo");
+
+        if(testEnviroment){
+            textField.sendKeys("Luiz Andriolo");
+        }else{
+            textField.sendKeys(TicketHelper.getConfig(ticketNumber,"userName"));
+        }
+
+
+
     }
 
     private void setHiddenField(){
@@ -217,14 +227,20 @@ public class GTAXNewTicket {
         }
     }
 
-    private void setCountry(WebElement formElement){
+    private void setCountry(WebElement formElement, String ticket){
         Select selectElement;
         WebElement element;
 
         element = formElement.findElement(By.id("00N1400000At5M4"));
         System.out.println(element);
         selectElement = new Select(element);
-        selectElement.selectByValue("Brazil");
+
+       if(ConfigHelper.getConfig("general", "country") != null && !ConfigHelper.getConfig("general", "country").isEmpty()) {
+            selectElement.selectByVisibleText(ConfigHelper.getConfig("general", "country"));
+        }else{
+            selectElement.selectByValue("Brazil");
+        }
+
     }
 
     private void setSubject(WebElement formElement, String ticket){
@@ -284,9 +300,13 @@ public class GTAXNewTicket {
 
         options = selectElement.getOptions();
 
-        for(int i = 0; i < options.size(); i++) {
-            if(options.get(i).getText().equals(TicketHelper.getConfig(ticket, "ticketStatus"))){
-                selectElement.selectByValue(options.get(i).getText());
+        if(ConfigHelper.getConfig("general", "status") != null && !ConfigHelper.getConfig("general", "status").isEmpty()) {
+            selectElement.selectByValue(ConfigHelper.getConfig("general", "status"));
+        }else{
+            for(int i = 0; i < options.size(); i++) {
+                if(options.get(i).getText().equals(TicketHelper.getConfig(ticket, "ticketStatus"))){
+                    selectElement.selectByValue(options.get(i).getText());
+                }
             }
         }
     }
@@ -302,9 +322,13 @@ public class GTAXNewTicket {
 
         options = selectElement.getOptions();
 
-        for(int i = 0; i < options.size(); i++) {
-            if(options.get(i).getText().equals(TicketHelper.getConfig(ticket, "stage"))){
-                selectElement.selectByValue(options.get(i).getText());
+        if(ConfigHelper.getConfig("general", "stage") != null && !ConfigHelper.getConfig("general", "stage").equals("--None--")){
+            selectElement.selectByValue(ConfigHelper.getConfig("general", "stage"));
+        }else if(!TicketHelper.getConfig(ticket, "stage").equals("--None--")){
+            for(int i = 0; i < options.size(); i++) {
+                if(options.get(i).getText().equals(TicketHelper.getConfig(ticket, "stage"))){
+                    selectElement.selectByValue(options.get(i).getText());
+                }
             }
         }
     }
@@ -319,12 +343,45 @@ public class GTAXNewTicket {
         return true;
     }
 
-    private void getNewTicketNumber(){
+    public String getNewTicketNumber(){
+        String ticketNumber;
+
         WD.switchTo().defaultContent();
 
         if(PagesHelper.waitForPageLoaded(this.WD)) {
-            WebElement newTab = this.WD.findElement(By.cssSelector("ul.x-tab-strip.x-tab-strip-top > li.x-tab-strip-closable span.tabText"));
-            System.out.println(newTab.getText());
+            try {
+                WebElement newTab = this.WD.findElement(By.cssSelector("ul.x-tab-strip.x-tab-strip-top > li.x-tab-strip-closable span.tabText"));
+                ticketNumber = newTab.getText();
+            }catch(Exception e){
+                ticketNumber = null;
+            }
+        }else{
+            ticketNumber = null;
         }
+
+        if(ticketNumber.equals("New Case")){
+            ticketNumber = getValidationError();
+        }
+
+        return ticketNumber;
+    }
+
+    private String getValidationError(){
+        WebElement errorWrap;
+        String errorMsg = null;
+
+        this.WD.switchTo().frame(this.frameID);
+
+        if(PagesHelper.waitForPageLoaded(this.WD)) {
+            try {
+                errorWrap = formElement.findElement(By.className("errorMsg"));
+
+                errorMsg = errorWrap.getText();
+            } catch (Exception e) {
+                errorMsg = "NOK";
+            }
+        }
+
+        return errorMsg;
     }
 }

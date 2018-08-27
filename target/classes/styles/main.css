@@ -1,10 +1,11 @@
 * {
     -fx-primary-color: #FF5900;
     -fx-second-color: #4D4D4D;
+    -fx-primary-color-light: #FF8000;
 }
 
 .background{
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color:  -fx-primary-color-light;
 }
 
 .footer{
@@ -52,4 +53,25 @@
 .jfx-progress-bar:indeterminate > .bar{
     -fx-background-color: -fx-primary-color;
     -fx-padding: 1.5;
+}
+
+.background.options-wrap{
+    -fx-background-color: -fx-second-color;
+}
+
+.jfx-combo-box {
+    -fx-prompt-text-fill: -fx-primary-color-light;
+}
+
+.btn-confirm{
+    -fx-background-color: -fx-primary-color-light;
+    -fx-text-fill: #fff;
+    -fx-cursor: hand;
+    -fx-border-radius: 0;
+    -fx-border-insets: 0;
+}
+
+.jfx-text-field.text-color{
+    -fx-prompt-text-fill: -fx-primary-color-light;
+    -fx-text-fill: #fff;
 }

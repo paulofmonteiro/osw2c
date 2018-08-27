@@ -92,7 +92,7 @@ public class WCCTicketInfo {
 
         if(this.OpenGeneralPage(this.ticketNumber)){
             if(this.getAllTextFields()){
-                this.ticket.setUserName(this.getUserName());
+                this.ticket.setUserName(this.toForUsername(this.getUserName()));
                 this.ticket.setUserEmail(this.getUserMail());
 
                 status = true;
@@ -133,7 +133,7 @@ public class WCCTicketInfo {
         text = "";
 
         this.webElement = this.listOfElements.get(3);
-
+        System.out.println("Projeto tela WCC: " + webElement.getText());
         if (webElement.getText().contains("CAMBIO")) {
             if (webElement.getText().contains("IMPORTACAÇÃO")) {
                 text = "Cambio Imp";
@@ -145,11 +145,15 @@ public class WCCTicketInfo {
         }else if(webElement.getText().contains("EV")){
             text = "Special Programs - EV";
         }else if(webElement.getText().contains("RECOF")){
-            text = "Special Programs - RECOF";
+            text = "Special Programs - Recof";
         }else if(webElement.getText().contains("REPLAT")){
-            text = "Special Programs - REPLAT";
+            text = "Special Programs - Replat";
         }else if(webElement.getText().contains("REPETRO")){
-            text = "Special Programs - REPETRO";
+            text = "Special Programs - Repetro";
+        }else if(webElement.getText().contains("RAF")){
+            text = "Special Programs - Raf";
+        }else if(webElement.getText().contains("BW")){
+            text = "Special Programs - BW";
         }else{
             rawText = webElement.getText().split(" - ");
 
@@ -171,6 +175,8 @@ public class WCCTicketInfo {
             }
         }
 
+
+        System.out.println("Projeto tratado: " + text);
         return text;
     }
 
@@ -322,7 +328,11 @@ public class WCCTicketInfo {
                    foundProjet = projects.get(i);
                }
            }
+        }else{
+            foundProjet = project;
         }
+
+        System.out.println("Project depara: " + foundProjet);
 
         return foundProjet;
     }
@@ -335,7 +345,7 @@ public class WCCTicketInfo {
         type2Inquiry.put("Problema/RM", "Technical Support");
         type2Inquiry.put("Problema/HF", "Technical Support");
         type2Inquiry.put("Dúvida", "Product Guidance");
-        type2Inquiry.put("Consultoria Online", "Direct Support");
+        type2Inquiry.put("Consultoria On-line", "Direct Support");
         type2Inquiry.put("Suporte Hosting", "Cloud Request");
         type2Inquiry.put("Suporte Hosting", "Cloud Request");
         type2Inquiry.put("Dúvida Custom", "Customization Support");
@@ -359,7 +369,7 @@ public class WCCTicketInfo {
         type2CallType.put("Problema/RM", "Technical Support - Error or Error Message");
         type2CallType.put("Problema/HF", "Technical Support - Software Access - Outage");
         type2CallType.put("Dúvida", "None");
-        type2CallType.put("Consultoria Online", "None");
+        type2CallType.put("Consultoria On-line", "None");
         type2CallType.put("Suporte Hosting", "Cloud Request - Error or Error Message");
         type2CallType.put("Suporte Hosting", "Cloud Request - Change Request");
         type2CallType.put("Dúvida Custom", "Customization Support - General Support");
@@ -405,7 +415,7 @@ public class WCCTicketInfo {
         if(type2status.containsKey(ticketStatus)){
             status = type2status.get(ticketStatus);
         }else{
-            status = "Closed";
+            status = "Open";
         }
 
         return status;
@@ -415,18 +425,29 @@ public class WCCTicketInfo {
         String stage;
 
         if(ticketStatus.equals("Aguardando Triagem") && gtaxStatus.equals("New")){
-            stage = "none";
+            stage = "--None--";
         }else if(ticketStatus.equals("Aguardando Suporte") && gtaxStatus.equals("New")){
-            stage = "none";
+            stage = "--None--";
         }else if(ticketStatus.equals("Em Suporte") && gtaxStatus.equals("Open")){
             stage = "In Progress";
         }else if(ticketStatus.equals("Pendencia do Requisitante") && gtaxStatus.equals("Open")){
             stage = "Waiting for Customer Reply";
         }else{
-            stage = "Closed";
+            stage = "--None--";
         }
 
         return stage;
+    }
+
+    private String toForUsername(String username){
+        String rawUsername [];
+        String name;
+
+        rawUsername = username.split(" ");
+
+        name = rawUsername[0] + " " + rawUsername[rawUsername.length-1];
+
+        return name;
     }
 
 }

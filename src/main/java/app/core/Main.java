@@ -1,5 +1,6 @@
 package app.core;
 
+import app.datasource.DataSource;
 import app.utils.ConfigHelper;
 import app.webdriver.WebDriverHelper;
 import com.sun.javafx.application.LauncherImpl;
@@ -14,26 +15,25 @@ import org.openqa.selenium.WebDriver;
 
 public class Main extends Application {
 
+    public static DataSource db;
+
     @Override
     public void init(){
-        // Perform some heavy lifting (i.e. database start, check for application updates, etc. )
-        for (int i = 0; i < 500000; i++) {
 
-            System.out.println((100 * i) / 500000);
-        }
-
-        if(ConfigHelper.loadConfigFile("general") && ConfigHelper.loadConfigFile("gtax")){
+        if(ConfigHelper.loadConfigFile("general") && ConfigHelper.loadConfigFile("gtax")) {
             ConfigHelper.loadConfigFile("wcc");
-            System.out.println("general config loaded");
-            System.out.println("gtax config loaded");
+            ConfigHelper.loadConfigFile("jira");
+            ConfigHelper.loadConfigFile("safe");
         }
+
+        db = new DataSource();
     }
 
     @Override
     public void start(Stage mainStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/views/main.fxml"));
 
-        mainStage.setTitle("Hello World");
+        mainStage.setTitle("One Ticket Transfer");
         //mainStage.initStyle(StageStyle.UNDECORATED);
         mainStage.setAlwaysOnTop(true);
         mainStage.setScene(new Scene(root));
@@ -41,6 +41,8 @@ public class Main extends Application {
             WebDriverHelper.getWebDriver("default").close();
             WebDriverHelper.getWebDriver("default").quit();
         });
+
+
         mainStage.show();
     }
 

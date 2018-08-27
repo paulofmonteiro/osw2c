@@ -1,10 +1,11 @@
 * {
     -fx-primary-color: #FF5900;
     -fx-second-color: #4D4D4D;
+    -fx-primary-color-light: #FF8000;
 }
 
 .background{
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color-light;
 }
 
 .footer{
