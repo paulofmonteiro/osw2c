@@ -1,12 +1,12 @@
 package app.utils;
 
+import app.wcc.WCCTicketModel;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,9 +92,11 @@ public class TicketHelper {
             configFile = ticketFiles.get(file);
 
             try {
-                fileWriter = new FileWriter(ticketFiles.get("general").getString("configFolder") + file + ".json");
-                fileWriter.write(configFile.toString());
-                fileWriter.close();
+                BufferedWriter out = new BufferedWriter
+                        (new OutputStreamWriter(new FileOutputStream(ticketFiles.get("general").getString("configFolder") + file + ".json"),  StandardCharsets.ISO_8859_1));
+
+                out.write(configFile.toString());
+                out.close();
 
                 return true;
             } catch (IOException e) {

@@ -3,10 +3,7 @@ package app.gtax;
 import app.utils.ConfigHelper;
 import app.utils.PagesHelper;
 import app.utils.TicketHelper;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,7 +24,7 @@ public class GTAXNewTicket {
             System.out.println("ok");
             formElement = this.WD.findElement(By.id("editPage"));
 
-            setUserName(ticketNumber, testEnviroment);
+            setUserName(ticketNumber, testEnviroment, formElement);
             setBrand(formElement);
             setProductTitle(formElement);
             setModule(formElement, ticketNumber);
@@ -122,18 +119,43 @@ public class GTAXNewTicket {
         return false;
     }
 
-    private void setUserName(String ticketNumber, Boolean testEnviroment){
+    private void setUserName(String ticketNumber, Boolean testEnviroment, WebElement formElement){
         WebElement textField;
+        WebElement userId;
+        WebElement userFullName;
+        WebElement userMod;
+
+        JavascriptExecutor executor = (JavascriptExecutor)this.WD;
+
         textField = this.WD.findElement(By.id("cas3"));
+        userId = formElement.findElement(By.id("cas3_lkid"));
+        userFullName = formElement.findElement(By.id("cas3_lkold"));
+        userMod =  formElement.findElement(By.id("cas3_mod"));
 
         if(testEnviroment){
-            textField.sendKeys("Luiz Andriolo");
-        }else{
+            //textField.sendKeys("Luiz Andriolo");
+
             textField.sendKeys(TicketHelper.getConfig(ticketNumber,"userName"));
+        }else{
+
+            textField.sendKeys(TicketHelper.getConfig(ticketNumber,"userName"));
+
+            executor.executeScript("arguments[0].setAttribute('type', 'text');", userId);
+            userId.clear();
+            userId.sendKeys(TicketHelper.getConfig(ticketNumber,"id"));
+            executor.executeScript("arguments[0].setAttribute('type', 'hidden');", userId);
+
+            executor.executeScript("arguments[0].setAttribute('type', 'text');", userFullName);
+            userFullName.clear();
+            userFullName.sendKeys(TicketHelper.getConfig(ticketNumber,"userName"));
+            executor.executeScript("arguments[0].setAttribute('type', 'hidden');", userFullName);
+
+            executor.executeScript("arguments[0].setAttribute('type', 'text');", userMod);
+            userMod.clear();
+            userMod.sendKeys("1");
+            executor.executeScript("arguments[0].setAttribute('type', 'hidden');", userMod);
+
         }
-
-
-
     }
 
     private void setHiddenField(){
@@ -246,7 +268,7 @@ public class GTAXNewTicket {
     private void setSubject(WebElement formElement, String ticket){
         WebElement textField;
         textField = this.WD.findElement(By.id("cas14"));
-        textField.sendKeys(TicketHelper.getConfig(ticket, "ticketTitle") + " - (WCC " + ticket + ")");
+        textField.sendKeys(TicketHelper.getConfig(ticket, "ticketTitle"));
     }
 
     private void setDescription(WebElement formElement, String ticket){

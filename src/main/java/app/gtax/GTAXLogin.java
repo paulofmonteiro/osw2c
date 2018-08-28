@@ -3,10 +3,7 @@ package app.gtax;
 import app.utils.ConfigHelper;
 import app.utils.PagesHelper;
 import javafx.concurrent.Task;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -84,10 +81,12 @@ public class GTAXLogin {
     }
 
     public void closeAllTicketFrames(){
+        WD.switchTo().defaultContent();
 
         if(PagesHelper.waitForPageLoaded(this.WD)){
             List<WebElement> newTabs = this.WD.findElements(By.cssSelector("ul.x-tab-strip.x-tab-strip-top > li.x-tab-strip-closable > a.x-tab-strip-close"));
             System.out.println(newTabs.size());
+
             //itera sobre a abas de um novo chamado
             for(int i = 0; i < newTabs.size(); i++){
                 try {

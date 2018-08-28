@@ -2,6 +2,7 @@ package app.gtax;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.Node;
 import org.openqa.selenium.WebDriver;
 
 public class GTAXLoginService extends Service<Boolean> {

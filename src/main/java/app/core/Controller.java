@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import org.openqa.selenium.Alert;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -256,7 +257,17 @@ public class Controller implements Initializable {
 
                 if(jira.login()){
                     for (WCCTicketModel ticket : tickets) {
-                        jira.insertGTAXnumber(ticket.getJiraReference(), ticket.getGTAXTicketNumber());
+                        if (ticket.getGTAXTicketNumber() != "NOK") {
+                            if (!ticket.getJiraReference().isEmpty() && ticket.getJiraReference() != null) {
+                                try {
+                                    jira.insertGTAXnumber(ticket.getJiraReference(), ticket.getGTAXTicketNumber());
+                                } catch (Exception e) {
+                                    ticket.setJiraStatus("NOK");
+                                }
+
+                                WCCTicketHelper.store(ticket);
+                            }
+                        }
                     }
                 }
 

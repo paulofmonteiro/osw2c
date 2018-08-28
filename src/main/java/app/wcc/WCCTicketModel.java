@@ -18,6 +18,8 @@ public class WCCTicketModel {
     private String stage;
     private String fat;
     private String country;
+    private String clientID;
+    private String jiraStatus;
 
     public String getWCCTicketNumber() {
         return WCCTicketNumber;
@@ -32,7 +34,11 @@ public class WCCTicketModel {
     }
 
     public void setGTAXTicketNumber(String GTAXTicketNumber) {
-        this.GTAXTicketNumber = GTAXTicketNumber;
+        if(GTAXTicketNumber == null){
+            this.GTAXTicketNumber = "";
+        }else{
+            this.GTAXTicketNumber = GTAXTicketNumber;
+        }
     }
 
     public String getJiraReference() {
@@ -161,5 +167,25 @@ public class WCCTicketModel {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(String clientID) {
+        if(clientID == null){
+            this.clientID = "";
+        }else{
+            this.clientID = clientID;
+        }
+    }
+
+    public String getJiraStatus() {
+        return jiraStatus;
+    }
+
+    public void setJiraStatus(String jiraStatus) {
+        this.jiraStatus = jiraStatus;
     }
 }

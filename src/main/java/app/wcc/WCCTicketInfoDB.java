@@ -64,8 +64,11 @@ public class WCCTicketInfoDB {
                 ticket.setJiraReference(queryResult.getString("JIRA_REFERENCE"));
                 ticket.setCountry(queryResult.getString("PAIS"));
                 ticket.setSupportAnalyst(queryResult.getString("ANALISTA_TR_RESPONSAVEL"));
+                ticket.setGTAXTicketNumber("");
+                ticket.setJiraStatus("");
 
                 ticket.setContactName(WCCTicketHelper.validateUser(this.db, ticket));
+                ticket.setClientID(WCCTicketHelper.validateUserID(this.db, ticket));
 
                 tickets.add(ticket);
 

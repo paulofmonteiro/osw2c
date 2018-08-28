@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.ExecutionException;
+
 public class Jira {
     private WebDriver WD;
     private Boolean testEnvironment;
@@ -40,37 +42,14 @@ public class Jira {
         return false;
     }
 
-    private Boolean doLogin(){
-        WebElement usernameField;
-        WebElement passwordField;
-        WebElement submitBnt;
-
-        usernameField = (new WebDriverWait(this.WD, 30).until(
-                ExpectedConditions.presenceOfElementLocated(By.id("username")
-                )));
-
-        passwordField = (new WebDriverWait(this.WD, 30).until(
-                ExpectedConditions.presenceOfElementLocated(By.id("password")
-                )));
-
-
-        submitBnt = (new WebDriverWait(this.WD, 30).until(
-                ExpectedConditions.presenceOfElementLocated(By.id("Login")
-                )));
-
-        /*usernameField.sendKeys(username);
-        passwordField.sendKeys(password);
-
-        submitBnt.submit();*/
-
-        return true;
-    }
-
-    public Boolean insertGTAXnumber(String jiraReference, String GTAXNumber){
+    public Boolean insertGTAXnumber(String jiraReference, String GTAXNumber) throws Exception {
         WebElement element;
         WebElement txtField;
-        WebElement btnForm;
+        WebElement btnForm = null;
 
+        Boolean nextElement = false;
+
+        Thread.sleep(1000);
         this.WD.get(ConfigHelper.getConfig("jira", "ticketUrl") + jiraReference);
 
         if(PagesHelper.waitForPageLoaded(this.WD)){
@@ -80,16 +59,28 @@ public class Jira {
 
             element.click();
 
-            txtField = (new WebDriverWait(this.WD, 30).until(
-                    ExpectedConditions.presenceOfElementLocated((By.id("customfield_10300"))
-                    )));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-            txtField.sendKeys(GTAXNumber);
+            while(!nextElement){
+                try {
+                    txtField = (new WebDriverWait(this.WD, 30).until(
+                            ExpectedConditions.presenceOfElementLocated((By.id("customfield_10300"))
+                            )));
 
+                    txtField.sendKeys(GTAXNumber);
 
-            btnForm = (new WebDriverWait(this.WD, 30).until(
-                    ExpectedConditions.presenceOfElementLocated((By.cssSelector("#customfield_10300-form button[type='submit'"))
-                    )));
+                    btnForm = (new WebDriverWait(this.WD, 30).until(
+                            ExpectedConditions.presenceOfElementLocated((By.cssSelector("#customfield_10300-form button[type='submit'"))
+                            )));
+                    nextElement = true;
+                }catch (Exception e){
+                    nextElement = false;
+                }
+            }
 
             btnForm.submit();
 

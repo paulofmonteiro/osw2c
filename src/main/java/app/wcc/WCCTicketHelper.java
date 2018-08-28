@@ -8,6 +8,7 @@ import javax.json.JsonObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -69,6 +70,9 @@ public class WCCTicketHelper {
                 .add("supportAnalyst", ticket.getSupportAnalyst())
                 .add("stage", ticket.getStage())
                 .add("country", ticket.getCountry())
+                .add("id", ticket.getClientID())
+                .add("gtaxNumber", ticket.getGTAXTicketNumber())
+                .add("jiraStatus", ticket.getJiraStatus())
                 .build();
 
         return ticketJson;
@@ -164,12 +168,22 @@ public class WCCTicketHelper {
         ResultSet queryResult;
         String query;
         String userName = null;
+        String clientName = null;
 
-        if (ticket.getContactName() == null) {
-            query = "SELECT * FROM WCC_TO_GTAX_CLIENT V WHERE V.projeto like '%" + ticket.getProject() + "%'";
+        if (ticket.getContactName() == null || ticket.getContactName().isEmpty()) {
+            if(ticket.getClientName().equals("Industria e Comercio de Cosmeticos Natura Ltda")){
+                clientName = "NATURA COSMETICOS S.A";
+            }else{
+                clientName = ticket.getClientName();
+            }
+
+            query = "SELECT * FROM WCC_TO_GTAX_CLIENT V WHERE lower(V.projeto) like '%" + clientName.toLowerCase() + "%'";
         } else {
-            query = "SELECT * FROM WCC_TO_GTAX_CLIENT V WHERE V.usuario like '%" + ticket.getContactName() + "%'";
+            query = "SELECT * FROM WCC_TO_GTAX_CLIENT V WHERE lower(V.usuario) like '%" + ticket.getContactName().toLowerCase() + "%'";
         }
+
+        System.out.println(ticket.getContactName());
+        System.out.println(query);
 
         try {
             queryExecutor = db.getDbCon().createStatement();
@@ -186,7 +200,41 @@ public class WCCTicketHelper {
             e.printStackTrace();
         }
 
+        System.out.print(userName);
+
         return userName;
     }
-}
 
+    public static String validateUserID(DataSource db, WCCTicketModel ticket) {
+        Statement queryExecutor;
+        ResultSet queryResult;
+        String query = null;
+        String id = null;
+
+
+        if (ticket.getContactName() != null || !ticket.getContactName().isEmpty()) {
+            query = "SELECT * FROM WCC_TO_GTAX_CLIENT V WHERE lower(V.usuario) like '%" + ticket.getContactName().toLowerCase() + "%' AND lower(V.projeto) like '%" +ticket.getClientName().toLowerCase() + "%'";
+        }
+
+        System.out.println(query);
+
+        try {
+            queryExecutor = db.getDbCon().createStatement();
+
+            queryResult = queryExecutor.executeQuery(query);
+
+            if (queryResult.next()) {
+                id = queryResult.getString("ID");
+            }
+
+            queryResult.close();
+            queryExecutor.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(id);
+
+        return id;
+    }
+}
